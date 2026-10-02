@@ -50,7 +50,8 @@ function WieZijnWij() {
     <>
       <PageMeta
         title="Wie zijn wij | Evolve Mobility"
-        description="Landelijk netwerk van gespecialiseerde EV-trainers en automotive professionals, met één centraal aanspreekpunt."
+        description="Het team achter Evolve Mobility: een landelijk netwerk van gespecialiseerde EV-trainers en automotive professionals voor EV-gebruikerstraining, met één centraal aanspreekpunt."
+        path="/wie-zijn-wij"
       />
 
       <Hero

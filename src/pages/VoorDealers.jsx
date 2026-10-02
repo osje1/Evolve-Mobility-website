@@ -90,8 +90,9 @@ function VoorDealers() {
   return (
     <>
       <PageMeta
-        title="Voor dealers | Evolve Mobility"
+        title="EV-gebruikerstraining voor dealers | Evolve Mobility"
         description="Complete dienstverlening rondom EV-gebruikerstraining voor dealers en dealergroepen: planning, trainer, uitvoering en kwaliteitsbewaking, landelijk uitgevoerd."
+        path="/voor-dealers"
       />
 
       <Hero

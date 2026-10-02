@@ -33,7 +33,8 @@ function Contact() {
     <>
       <PageMeta
         title="Contact | Evolve Mobility"
-        description="Neem contact op voor EV-gebruikerstrainingen, dealerintroducties of meer informatie over ons landelijke trainersnetwerk."
+        description="Neem contact op voor EV-gebruikerstraining, dealerintroducties of meer informatie over ons landelijke trainersnetwerk."
+        path="/contact"
       />
 
       <section className="relative overflow-hidden bg-ink-50 px-6 py-20 lg:px-10 lg:py-28">

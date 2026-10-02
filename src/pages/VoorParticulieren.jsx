@@ -56,8 +56,9 @@ function VoorParticulieren() {
   return (
     <>
       <PageMeta
-        title="Voor particulieren | Evolve Mobility"
-        description="Persoonlijke gebruikerstraining van circa 75 minuten: leer wat je elektrische auto kan en hoe je hem optimaal gebruikt."
+        title="EV-gebruikerstraining voor particulieren | Evolve Mobility"
+        description="Training voor nieuwe EV-rijders: in een persoonlijke gebruikerstraining van circa 75 minuten leer je wat je elektrische auto kan en hoe je hem optimaal gebruikt."
+        path="/voor-particulieren"
       />
 
       <Hero

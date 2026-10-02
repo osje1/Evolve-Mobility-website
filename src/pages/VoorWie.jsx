@@ -39,8 +39,9 @@ function VoorWie() {
   return (
     <>
       <PageMeta
-        title="Voor wie | Evolve Mobility"
-        description="EV-gebruikerstrainingen en ondersteuning voor dealers, particulieren, automotive-importeurs en mobiliteitsevenementen."
+        title="Voor wie | EV-gebruikerstraining voor elke doelgroep | Evolve Mobility"
+        description="EV-gebruikerstraining en ondersteuning op maat: voor dealers en dealergroepen, particuliere EV-rijders, en automotive-importeurs met mobiliteitsevenementen."
+        path="/voor-wie"
       />
 
       <Hero

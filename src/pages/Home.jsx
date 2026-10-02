@@ -53,8 +53,9 @@ function Home() {
   return (
     <>
       <PageMeta
-        title="Evolve Mobility | EV-gebruikerstrainingen voor dealers, importeurs en particulieren"
-        description="Landelijk netwerk van eigen trainers voor EV-gebruikerstrainingen, dealerintroducties en mobiliteitsevenementen, met één centraal aanspreekpunt."
+        title="Evolve Mobility | EV-gebruikerstraining voor dealers en particulieren"
+        description="Landelijk netwerk van eigen trainers voor EV-gebruikerstraining, dealerintroducties en mobiliteitsevenementen. Eén centraal aanspreekpunt, door heel Nederland."
+        path="/"
       />
 
       <Hero

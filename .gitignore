@@ -1,0 +1,15 @@
+node_modules
+dist
+dist-ssr
+*.local
+.DS_Store
+screenshots
+.claude
+
+# Ruwe/ongebruikte bronbestanden in de projectroot (niet door de site zelf ingeladen —
+# de daadwerkelijk gebruikte versies staan al in src/assets/ en public/).
+Evolve Mobility Website Video.mp4
+Evolve letter E kopie.png
+Evolve.png
+nieuwe linkedin logo.png
+profielfoto oscar.PNG

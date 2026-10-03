@@ -111,7 +111,7 @@ function Home() {
       <section className="bg-ink-50 px-6 py-24 lg:px-10 lg:py-32">
         <div className="mx-auto max-w-7xl">
           <SectionHeading
-            title="Drie pijlers, één resultaat"
+            title="Onze uitgangspunten"
             description="Iedere training bouwt voort op dezelfde uitgangspunten, ongeacht het merk of model."
             align="center"
             className="mx-auto"

@@ -10,7 +10,7 @@ const doelgroepen = [
     eyebrow: 'Voor dealers',
     title: 'Maak de klantervaring van iedere verkochte EV compleet.',
     description:
-      'Wij verzorgen gebruikerstrainingen, dealerondersteuning en modelintroducties, zodat uw klanten na de aflevering echt weten wat hun auto kan.',
+      'Wij verzorgen gebruikerstrainingen, dealerondersteuning en modelintroducties, zodat uw klanten de optimale ervaring krijgen.',
     cta: { label: 'Ontdek wat wij voor dealers kunnen betekenen', to: '/voor-dealers' },
     tone: 'light',
   },

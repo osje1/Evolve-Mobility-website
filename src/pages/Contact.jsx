@@ -1,12 +1,21 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Phone, Mail } from 'lucide-react'
-import { motion, useReducedMotion } from 'framer-motion'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import PageMeta from '../components/PageMeta.jsx'
 import ProfilePhoto from '../components/ProfilePhoto.jsx'
 import Reveal from '../components/Reveal.jsx'
 import useIsDesktop from '../hooks/useIsDesktop.js'
 
 const DESKTOP_DRIFT_SCALE = 1.5
+
+// Web3Forms: geen eigen backend nodig, deze access key is bedoeld om publiek in de
+// frontend te staan (vergelijkbaar met een reCAPTCHA site-key), dat is hoe Web3Forms werkt.
+const WEB3FORMS_ACCESS_KEY = '99295064-99ea-4452-ba12-5a4f4f77f968'
+const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit'
+const MAIL_SUBJECT = 'Nieuw bericht via evolvemobility.nl'
+// Extra, onzichtbare bot-check naast de honeypot: een bot vult een formulier vrijwel
+// direct in, een echt persoon heeft daar altijd even voor nodig.
+const MIN_FILL_TIME_MS = 3000
 
 const onderwerpen = [
   'Gebruikerstrainingen voor dealers en dealergroepen',
@@ -18,15 +27,60 @@ const onderwerpen = [
 ]
 
 function Contact() {
-  const [isSubmitted, setIsSubmitted] = useState(false)
+  // 'idle' | 'submitting' | 'success' | 'error'
+  const [status, setStatus] = useState('idle')
   const prefersReducedMotion = useReducedMotion()
   const isDesktop = useIsDesktop()
   const xScale = isDesktop ? DESKTOP_DRIFT_SCALE : 1
+  const formShownAtRef = useRef(Date.now())
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault()
-    // TODO: verzendmechanisme nog te bepalen met de klant (form-API of eigen backend-endpoint)
-    setIsSubmitted(true)
+    const form = event.currentTarget
+
+    // Twee onzichtbare controles tegen geautomatiseerd/misbruikt versturen door anderen
+    // dan een bezoeker die het formulier echt invult:
+    // 1) Honeypot-veld: alleen bots vullen dit in.
+    // 2) Te snel verstuurd: sneller dan een mens het formulier kan invullen.
+    // In beide gevallen doen we alsof het gelukt is (zodat een bot niet blijft proberen),
+    // maar sturen we niets naar Web3Forms.
+    const submittedTooFast = Date.now() - formShownAtRef.current < MIN_FILL_TIME_MS
+    if (form.elements.botcheck.checked || submittedTooFast) {
+      form.reset()
+      setStatus('success')
+      return
+    }
+
+    // Verplichte velden check (naast de native browser-validatie via `required`).
+    if (!form.checkValidity()) {
+      form.reportValidity()
+      return
+    }
+
+    setStatus('submitting')
+
+    const payload = Object.fromEntries(new FormData(form).entries())
+    payload.access_key = WEB3FORMS_ACCESS_KEY
+    payload.subject = MAIL_SUBJECT
+    delete payload.botcheck
+
+    try {
+      const response = await fetch(WEB3FORMS_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(payload),
+      })
+      const result = await response.json().catch(() => null)
+
+      if (response.ok && result?.success) {
+        form.reset()
+        setStatus('success')
+      } else {
+        setStatus('error')
+      }
+    } catch {
+      setStatus('error')
+    }
   }
 
   return (
@@ -84,14 +138,48 @@ function Contact() {
           </motion.div>
 
           <Reveal delay={0.15}>
-            <div className="mt-12 rounded-3xl border border-ink-100 bg-white p-6 shadow-raised sm:p-10">
-              {isSubmitted ? (
-                <div role="status" className="rounded-2xl border border-flare-200 bg-flare-50 p-6 text-flare-800">
-                  <p className="font-heading text-lg font-semibold">Bedankt voor uw bericht</p>
-                  <p className="mt-2 text-sm">Ik neem zo snel mogelijk contact met u op.</p>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="grid gap-5">
+            <div className="mt-12 overflow-hidden rounded-3xl border border-ink-100 bg-white p-6 shadow-raised sm:p-10">
+              <AnimatePresence mode="wait" initial={false}>
+                {status === 'success' ? (
+                  <motion.div
+                    key="success"
+                    role="status"
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -16 }}
+                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                    className="rounded-2xl border border-flare-200 bg-flare-50 p-6 text-flare-800"
+                  >
+                    <p className="font-heading text-lg font-semibold">Bedankt voor uw bericht</p>
+                    <p className="mt-2 text-sm">Ik neem zo snel mogelijk contact met u op.</p>
+                  </motion.div>
+                ) : (
+                  <motion.form
+                    key="form"
+                    onSubmit={handleSubmit}
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -16 }}
+                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                    className="grid gap-5"
+                  >
+                    {status === 'error' && (
+                    <div role="alert" className="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
+                      Er ging iets mis bij het versturen van uw bericht. Probeert u het nogmaals, of neem
+                      rechtstreeks contact op via de gegevens hierboven.
+                    </div>
+                  )}
+
+                  {/* Honeypot-veld tegen spam: voor echte bezoekers onzichtbaar en niet focusbaar. */}
+                  <input
+                    type="checkbox"
+                    name="botcheck"
+                    tabIndex="-1"
+                    autoComplete="off"
+                    aria-hidden="true"
+                    className="hidden"
+                  />
+
                   <div className="grid gap-5 sm:grid-cols-2">
                     <label className="grid gap-1.5 text-sm font-medium text-ink-700">
                       Naam
@@ -103,7 +191,7 @@ function Contact() {
                       />
                     </label>
                     <label className="grid gap-1.5 text-sm font-medium text-ink-700">
-                      Bedrijfsnaam
+                      Bedrijfsnaam (optioneel)
                       <input
                         type="text"
                         name="bedrijfsnaam"
@@ -160,12 +248,14 @@ function Contact() {
 
                   <button
                     type="submit"
-                    className="mt-2 w-fit rounded-full bg-flare-500 px-8 py-3 text-sm font-semibold text-white shadow-raised transition-transform duration-200 ease-premium hover:-translate-y-0.5 hover:bg-flare-600 active:translate-y-0"
+                    disabled={status === 'submitting'}
+                    className="mt-2 w-fit rounded-full bg-flare-500 px-8 py-3 text-sm font-semibold text-white shadow-raised transition-transform duration-200 ease-premium hover:-translate-y-0.5 hover:bg-flare-600 active:translate-y-0 disabled:pointer-events-none disabled:opacity-60"
                   >
-                    Versturen
+                    {status === 'submitting' ? 'Versturen...' : 'Versturen'}
                   </button>
-                </form>
-              )}
+                  </motion.form>
+                )}
+              </AnimatePresence>
             </div>
           </Reveal>
         </div>

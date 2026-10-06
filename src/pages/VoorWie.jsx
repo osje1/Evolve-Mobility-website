@@ -1,4 +1,3 @@
-import { Handshake, GraduationCap, Rocket, Check } from 'lucide-react'
 import PageMeta from '../components/PageMeta.jsx'
 import Hero from '../components/Hero.jsx'
 import Button from '../components/Button.jsx'
@@ -6,7 +5,6 @@ import Reveal from '../components/Reveal.jsx'
 
 const doelgroepen = [
   {
-    icon: Handshake,
     eyebrow: 'Voor dealers',
     title: 'Maak de klantervaring van iedere verkochte EV compleet.',
     description:
@@ -15,7 +13,6 @@ const doelgroepen = [
     tone: 'light',
   },
   {
-    icon: GraduationCap,
     eyebrow: 'Voor particulieren',
     title: 'Meer begrijpen. Meer vertrouwen. Meer uit je elektrische auto halen.',
     description:
@@ -24,7 +21,6 @@ const doelgroepen = [
     tone: 'dark',
   },
   {
-    icon: Rocket,
     eyebrow: 'Voor automotive & importeurs',
     title: 'Landelijke ondersteuning bij modelintroducties en demonstraties.',
     description: 'Wij ondersteunen bij:',
@@ -60,17 +56,8 @@ function VoorWie() {
           >
             <div className="mx-auto max-w-4xl">
               <Reveal>
-                <div
-                  className={`flex h-12 w-12 items-center justify-center rounded-xl ${
-                    isDark ? 'bg-flare-500/15 text-flare-400' : 'bg-flare-50 text-flare-600'
-                  }`}
-                >
-                  <groep.icon className="h-6 w-6" strokeWidth={1.75} />
-                </div>
-              </Reveal>
-              <Reveal delay={0.08}>
                 <p
-                  className={`mt-6 text-xs font-semibold uppercase tracking-[0.2em] ${
+                  className={`text-xs font-semibold uppercase tracking-[0.2em] ${
                     isDark ? 'text-flare-400' : 'text-flare-600'
                   }`}
                 >
@@ -98,11 +85,8 @@ function VoorWie() {
                     {groep.bullets.map((bullet) => (
                       <li
                         key={bullet}
-                        className={`flex items-center gap-2.5 text-sm font-medium ${
-                          isDark ? 'text-ink-200' : 'text-ink-700'
-                        }`}
+                        className={`text-sm font-medium ${isDark ? 'text-ink-200' : 'text-ink-700'}`}
                       >
-                        <Check className="h-4 w-4 flex-shrink-0 text-flare-500" strokeWidth={2.5} />
                         {bullet}
                       </li>
                     ))}

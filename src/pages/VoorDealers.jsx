@@ -1,22 +1,9 @@
-import {
-  ThumbsUp,
-  MessageCircleOff,
-  Sparkles,
-  ShieldCheck,
-  Award,
-  Trophy,
-  Handshake,
-  CalendarRange,
-  Presentation,
-  X,
-  Check,
-} from 'lucide-react'
 import { motion, useReducedMotion } from 'framer-motion'
 import PageMeta from '../components/PageMeta.jsx'
 import Hero from '../components/Hero.jsx'
 import Button from '../components/Button.jsx'
 import SectionHeading from '../components/SectionHeading.jsx'
-import IconCard from '../components/IconCard.jsx'
+import TextCard from '../components/TextCard.jsx'
 import NetworkCoverage from '../components/NetworkCoverage.jsx'
 import TiltCard from '../components/TiltCard.jsx'
 import Reveal from '../components/Reveal.jsx'
@@ -31,7 +18,7 @@ const complexiteit = [
   'Actieve aandachtsassistent',
   'Snelheidswaarschuwingen',
   'Regeneratief remmen',
-  'Laadtechnologie',
+  'Laden en laadplanning',
   'Actieradius',
   'Connected services',
   'Verschillende rijmodi',
@@ -47,12 +34,12 @@ const nietZelf = [
 const wijRegelen = ['Planning', 'Trainer', 'Communicatie', 'Uitvoering', 'Administratie', 'Kwaliteitsbewaking']
 
 const voordelen = [
-  { icon: ThumbsUp, title: 'Hogere klanttevredenheid', description: 'De klant krijgt extra persoonlijke aandacht na de aankoop.' },
-  { icon: Award, title: 'Hogere merkretentie', description: 'Klanten worden extra enthousiast over hun auto na de aankoop en komen daardoor eerder terug bij een volgende aankoop.' },
-  { icon: MessageCircleOff, title: 'Minder nazorg', description: 'Veel praktische vragen worden tijdens de training al beantwoord.' },
-  { icon: Trophy, title: 'Onderscheidend vermogen', description: 'U onderscheidt zich als dealer door klanten extra begeleiding te bieden bij de aanschaf van een elektrische auto.' },
-  { icon: Sparkles, title: 'Betere merkbeleving', description: 'De klant ontdekt functies die anders mogelijk onbenut blijven.' },
-  { icon: ShieldCheck, title: 'Veiliger gebruik', description: 'De klant begrijpt beter hoe actieve veiligheidssystemen werken.' },
+  { title: 'Hogere klanttevredenheid', description: 'De klant krijgt extra persoonlijke aandacht na de aankoop.' },
+  { title: 'Hogere merkretentie', description: 'Klanten worden extra enthousiast over hun auto na de aankoop en komen daardoor eerder terug bij een volgende aankoop.' },
+  { title: 'Minder nazorg', description: 'Veel praktische vragen worden tijdens de training al beantwoord.' },
+  { title: 'Onderscheidend vermogen', description: 'U onderscheidt zich als dealer door klanten extra begeleiding te bieden bij de aanschaf van een elektrische auto.' },
+  { title: 'Betere merkbeleving', description: 'De klant ontdekt functies die anders mogelijk onbenut blijven.' },
+  { title: 'Veiliger gebruik', description: 'De klant begrijpt beter hoe actieve veiligheidssystemen werken.' },
 ]
 
 const traject = [
@@ -65,18 +52,15 @@ const traject = [
 
 const overigeDiensten = [
   {
-    icon: Handshake,
     title: 'Dealerintroducties',
     description:
       'Wanneer een nieuw automodel langs verschillende Nederlandse showrooms gaat, leveren wij trainers en begeleiders die het dealernetwerk ondersteunen bij de introductie.',
   },
   {
-    icon: CalendarRange,
     title: 'Mobiliteitsevenementen',
     description: 'Wij leveren trainers en automotive begeleiders voor mobiliteits- en automotive-evenementen.',
   },
   {
-    icon: Presentation,
     title: 'Productdemonstraties',
     description: 'Ondersteuning bij het demonstreren en uitleggen van nieuwe voertuigtechnologie.',
   },
@@ -102,7 +86,6 @@ function VoorDealers() {
         subtitle="Moderne elektrische auto's beschikken over tientallen veiligheids-, assistentie- en comfortsystemen. Dat roept bij veel klanten vragen op. Wij zorgen ervoor dat deze vragen beantwoord worden en klanten alle functies begrijpen en kunnen toepassen, zodat ze optimaal gebruik kunnen maken van hun nieuwe auto."
       >
         <div className="flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-5 py-3 text-sm font-medium text-white backdrop-blur-sm">
-          <Sparkles className="h-4 w-4 text-flare-400" strokeWidth={2} />
           Bijna elke klant leert iets nieuws tijdens de training
         </div>
         <Button to="/contact" variant="primary">
@@ -174,7 +157,7 @@ function VoorDealers() {
           />
           <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {voordelen.map((voordeel, index) => (
-              <IconCard key={voordeel.title} {...voordeel} delay={index * 0.07} />
+              <TextCard key={voordeel.title} {...voordeel} delay={index * 0.07} />
             ))}
           </div>
         </div>
@@ -224,8 +207,7 @@ function VoorDealers() {
                 <h3 className="font-heading text-lg font-semibold text-ink-950">U hoeft zelf niet:</h3>
                 <ul className="mt-5 space-y-3">
                   {nietZelf.map((item) => (
-                    <li key={item} className="flex items-center gap-3 text-sm text-ink-600">
-                      <X className="h-4 w-4 flex-shrink-0 text-ink-400" strokeWidth={2.5} />
+                    <li key={item} className="text-sm text-ink-600">
                       {item}
                     </li>
                   ))}
@@ -237,8 +219,7 @@ function VoorDealers() {
                 <h3 className="font-heading text-lg font-semibold text-ink-950">Wij zorgen voor:</h3>
                 <ul className="mt-5 space-y-3">
                   {wijRegelen.map((item) => (
-                    <li key={item} className="flex items-center gap-3 text-sm font-medium text-ink-800">
-                      <Check className="h-4 w-4 flex-shrink-0 text-flare-600" strokeWidth={2.5} />
+                    <li key={item} className="text-sm font-medium text-ink-800">
                       {item}
                     </li>
                   ))}
@@ -259,7 +240,7 @@ function VoorDealers() {
           <SectionHeading title="Andere diensten voor dealers" />
           <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {overigeDiensten.map((dienst, index) => (
-              <IconCard key={dienst.title} {...dienst} delay={index * 0.1} />
+              <TextCard key={dienst.title} {...dienst} delay={index * 0.1} />
             ))}
           </div>
         </div>

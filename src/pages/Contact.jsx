@@ -1,5 +1,4 @@
 import { useRef, useState } from 'react'
-import { Phone, Mail } from 'lucide-react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import PageMeta from '../components/PageMeta.jsx'
 import ProfilePhoto from '../components/ProfilePhoto.jsx'
@@ -127,14 +126,12 @@ function Contact() {
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-4 sm:justify-start">
               <div className="flex items-center gap-2 rounded-full border border-ink-200 bg-white px-5 py-3 text-sm font-medium text-ink-700">
-                <Phone className="h-4 w-4 text-flare-600" strokeWidth={2} />
                 [telefoonnummer]
               </div>
               <a
                 href="mailto:info@evolvemobility.nl"
                 className="flex items-center gap-2 rounded-full border border-ink-200 bg-white px-5 py-3 text-sm font-medium text-ink-700 transition-colors duration-200 ease-premium hover:border-flare-300 hover:text-flare-700"
               >
-                <Mail className="h-4 w-4 text-flare-600" strokeWidth={2} />
                 info@evolvemobility.nl
               </a>
             </div>

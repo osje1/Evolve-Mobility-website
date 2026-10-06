@@ -1,4 +1,4 @@
-import { Car, ShieldCheck, BatteryCharging, Route, RefreshCcw, Luggage, Clock, Sparkles } from 'lucide-react'
+import { Car, ShieldCheck, BatteryCharging, Route, RefreshCcw, Luggage } from 'lucide-react'
 import PageMeta from '../components/PageMeta.jsx'
 import Hero from '../components/Hero.jsx'
 import Button from '../components/Button.jsx'
@@ -28,7 +28,14 @@ const categorieën = [
   {
     icon: BatteryCharging,
     title: 'Laden',
-    items: ['Thuisladen', 'AC-laden', 'DC-snelladen', 'Laadpassen', 'Laadapps', 'Laadplanning'],
+    items: [
+      'Laadplanning en laadlimiet instellen',
+      'Laadpassen en welke past bij jouw gebruik',
+      'Laadapps en navigatie naar laders',
+      'Laadsnelheid en laadcurve van jouw auto',
+      'Laadkabel en laadstand van de auto begrijpen',
+      'Laden onderweg gebruiken',
+    ],
   },
   {
     icon: Route,
@@ -68,11 +75,9 @@ function VoorParticulieren() {
         subtitle="Een elektrische auto werkt anders dan een traditionele auto. Tijdens een persoonlijke gebruikerstraining nemen we de tijd om uit te leggen wat jouw auto kan en hoe je deze optimaal gebruikt."
       >
         <div className="flex items-center gap-2 rounded-full border border-ink-200 bg-white px-5 py-3 text-sm font-medium text-ink-700">
-          <Clock className="h-4 w-4 text-flare-600" strokeWidth={2} />
           Circa 75 minuten, persoonlijk en praktisch
         </div>
         <div className="flex items-center gap-2 rounded-full border border-ink-200 bg-white px-5 py-3 text-sm font-medium text-ink-700">
-          <Sparkles className="h-4 w-4 text-flare-600" strokeWidth={2} />
           Bijna iedereen leert iets nieuws tijdens de training
         </div>
         <Button to="/contact" variant="secondary">

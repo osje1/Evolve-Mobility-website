@@ -1,11 +1,10 @@
 import { Link } from 'react-router-dom'
-import { ShieldCheck, Gauge, BadgeCheck, GraduationCap, Handshake, CalendarRange, User } from 'lucide-react'
 import PageMeta from '../components/PageMeta.jsx'
 import Hero from '../components/Hero.jsx'
 import Button from '../components/Button.jsx'
 import SectionHeading from '../components/SectionHeading.jsx'
 import VideoBackground from '../components/VideoBackground.jsx'
-import IconCard from '../components/IconCard.jsx'
+import TextCard from '../components/TextCard.jsx'
 import NetworkCoverage from '../components/NetworkCoverage.jsx'
 import Reveal from '../components/Reveal.jsx'
 import TiltCard from '../components/TiltCard.jsx'
@@ -17,36 +16,33 @@ const technologieën = [
   'Aandachtsassistent',
   'Snelheidswaarschuwingen',
   'Regeneratief remmen',
-  'Laadtechnologie',
+  'Laden en laadplanning',
   'Actieradius',
   'Connected functies',
 ]
 
 const pijlers = [
   {
-    icon: ShieldCheck,
     title: 'Veiligheid',
     description:
       'De bestuurder begrijpt hoe actieve veiligheidssystemen werken en wanneer ze ingrijpen.',
   },
   {
-    icon: Gauge,
     title: 'Efficiëntie',
     description:
       'De bestuurder leert hoe hij slim omgaat met energie, laden, regeneratief remmen en actieradius.',
   },
   {
-    icon: BadgeCheck,
     title: 'Zekerheid',
     description: 'De bestuurder kan alle vragen stellen en leert alle ins en outs van de auto kennen.',
   },
 ]
 
 const diensten = [
-  { icon: GraduationCap, title: 'EV-gebruikerstrainingen', to: '/voor-particulieren#wat-leer-je-tijdens-de-training' },
-  { icon: Handshake, title: 'Dealerintroducties', to: '/voor-dealers#dealerintroducties' },
-  { icon: CalendarRange, title: 'Automotive- en mobiliteitsevenementen', to: '/voor-wie#automotive-mobiliteitsevenementen' },
-  { icon: User, title: 'Particuliere trainingen', to: '/voor-particulieren' },
+  { title: 'EV-gebruikerstrainingen', to: '/voor-particulieren#wat-leer-je-tijdens-de-training' },
+  { title: 'Dealerintroducties', to: '/voor-dealers#dealerintroducties' },
+  { title: 'Automotive- en mobiliteitsevenementen', to: '/voor-wie#automotive-mobiliteitsevenementen' },
+  { title: 'Particuliere trainingen', to: '/voor-particulieren' },
 ]
 
 function Home() {
@@ -118,7 +114,7 @@ function Home() {
           />
           <div className="mt-14 grid gap-6 md:grid-cols-3">
             {pijlers.map((pijler, index) => (
-              <IconCard key={pijler.title} {...pijler} delay={index * 0.1} />
+              <TextCard key={pijler.title} {...pijler} delay={index * 0.1} />
             ))}
           </div>
         </div>
@@ -133,13 +129,9 @@ function Home() {
                 <TiltCard className="h-full">
                   <Link
                     to={dienst.to}
-                    className="group flex h-full flex-col justify-between rounded-2xl border border-ink-100 bg-ink-50 p-7 shadow-base transition-shadow duration-300 ease-premium hover:shadow-raised"
+                    className="flex h-full flex-col justify-between rounded-2xl border border-ink-100 bg-ink-50 p-7 shadow-base transition-shadow duration-300 ease-premium hover:shadow-raised"
                   >
-                    <dienst.icon
-                      className="h-7 w-7 text-flare-500 transition-transform duration-300 ease-premium group-hover:scale-110"
-                      strokeWidth={1.75}
-                    />
-                    <p className="mt-8 font-heading text-base font-semibold text-ink-950">{dienst.title}</p>
+                    <p className="font-heading text-base font-semibold text-ink-950">{dienst.title}</p>
                   </Link>
                 </TiltCard>
               </Reveal>

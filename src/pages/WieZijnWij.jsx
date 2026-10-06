@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import PageMeta from '../components/PageMeta.jsx'
 import Hero from '../components/Hero.jsx'
 import SectionHeading from '../components/SectionHeading.jsx'
@@ -23,6 +24,10 @@ const specialiteiten = [
   { title: 'EV- en laadtechnologie', description: 'Uitleg over laden, actieradius en energieverbruik van de auto.' },
 ]
 
+// Op mobiel staan alleen de eerste zoveel specialiteiten meteen zichtbaar, de rest blijft in
+// de HTML staan maar is visueel verborgen tot "Toon meer". Vanaf sm: altijd alles zichtbaar.
+const ZICHTBARE_SPECIALITEITEN_MOBIEL = 3
+
 const kernwaarden = [
   { label: 'Persoonlijk' },
   { label: 'Praktisch' },
@@ -33,6 +38,8 @@ const kernwaarden = [
 ]
 
 function WieZijnWij() {
+  const [toonAlleSpecialiteiten, setToonAlleSpecialiteiten] = useState(false)
+
   return (
     <>
       <PageMeta
@@ -105,7 +112,15 @@ function WieZijnWij() {
           />
           <div className="mx-auto mt-14 max-w-2xl space-y-8">
             {specialiteiten.map((item, index) => (
-              <Reveal key={item.title} delay={index * 0.06}>
+              <Reveal
+                key={item.title}
+                delay={index * 0.06}
+                className={
+                  !toonAlleSpecialiteiten && index >= ZICHTBARE_SPECIALITEITEN_MOBIEL
+                    ? 'hidden sm:!block'
+                    : undefined
+                }
+              >
                 <div className="border-l-2 border-ink-200 py-2 pl-6 transition-colors duration-300 ease-premium hover:border-flare-500">
                   <h3 className="font-heading text-lg font-semibold text-ink-950">{item.title}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-ink-600">{item.description}</p>
@@ -113,13 +128,25 @@ function WieZijnWij() {
               </Reveal>
             ))}
           </div>
+          {specialiteiten.length > ZICHTBARE_SPECIALITEITEN_MOBIEL && (
+            <button
+              type="button"
+              onClick={() => setToonAlleSpecialiteiten((v) => !v)}
+              aria-expanded={toonAlleSpecialiteiten}
+              className="mx-auto mt-6 block text-sm font-semibold text-flare-600 hover:text-flare-700 sm:hidden"
+            >
+              {toonAlleSpecialiteiten ? 'Toon minder' : 'Toon meer'}
+            </button>
+          )}
         </div>
       </section>
 
-      <NetworkCoverage
-        title="Eén organisatie, landelijk vertegenwoordigd"
-        description="Door heel Nederland werken wij samen met een geselecteerd netwerk van gespecialiseerde trainers. Een landelijk netwerk zodat er altijd iemand in de buurt is."
-      />
+      <div className="hidden sm:block">
+        <NetworkCoverage
+          title="Eén organisatie, landelijk vertegenwoordigd"
+          description="Door heel Nederland werken wij samen met een geselecteerd netwerk van gespecialiseerde trainers. Een landelijk netwerk zodat er altijd iemand in de buurt is."
+        />
+      </div>
 
       <section className="bg-white px-6 py-24 lg:px-10 lg:py-32">
         <div className="mx-auto max-w-7xl">

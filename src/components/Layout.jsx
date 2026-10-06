@@ -3,7 +3,7 @@ import Footer from './Footer.jsx'
 
 function Layout({ children }) {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen supports-[height:100dvh]:min-h-dvh flex-col">
       <Navbar />
       <main className="flex-1">{children}</main>
       <Footer />

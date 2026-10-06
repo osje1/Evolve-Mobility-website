@@ -52,7 +52,7 @@ function VoorWie() {
           <section
             key={groep.eyebrow}
             id={groep.id}
-            className={`scroll-mt-24 px-6 py-20 lg:px-10 lg:py-28 ${isDark ? 'bg-ink-950' : 'bg-white'}`}
+            className={`scroll-mt-24 px-6 py-14 sm:py-20 lg:px-10 lg:py-28 ${isDark ? 'bg-ink-950' : 'bg-white'}`}
           >
             <div className="mx-auto max-w-4xl">
               <Reveal>

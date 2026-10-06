@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import PageMeta from '../components/PageMeta.jsx'
 import Hero from '../components/Hero.jsx'
@@ -20,6 +21,11 @@ const technologieën = [
   'Actieradius',
   'Connected functies',
 ]
+
+// Op mobiel staan alleen de eerste zoveel onderwerpen meteen zichtbaar; de rest blijft in de
+// HTML staan (voor zoekmachines) maar is visueel verborgen tot de bezoeker op "Toon alle
+// onderwerpen" tikt. Vanaf sm: (640px) altijd alles zichtbaar, zoals nu.
+const ZICHTBARE_ONDERWERPEN_MOBIEL = 5
 
 const pijlers = [
   {
@@ -46,6 +52,8 @@ const diensten = [
 ]
 
 function Home() {
+  const [toonAlleOnderwerpen, setToonAlleOnderwerpen] = useState(false)
+
   return (
     <>
       <PageMeta
@@ -93,13 +101,32 @@ function Home() {
             </Reveal>
             <div className="flex flex-wrap content-start gap-3">
               {technologieën.map((item, index) => (
-                <Reveal key={item} delay={index * 0.05} direction="right">
+                <Reveal
+                  key={item}
+                  delay={index * 0.05}
+                  direction="right"
+                  className={
+                    !toonAlleOnderwerpen && index >= ZICHTBARE_ONDERWERPEN_MOBIEL
+                      ? 'hidden sm:!block'
+                      : undefined
+                  }
+                >
                   <span className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-white backdrop-blur-sm">
                     {item}
                   </span>
                 </Reveal>
               ))}
             </div>
+            {technologieën.length > ZICHTBARE_ONDERWERPEN_MOBIEL && (
+              <button
+                type="button"
+                onClick={() => setToonAlleOnderwerpen((v) => !v)}
+                aria-expanded={toonAlleOnderwerpen}
+                className="text-left text-sm font-semibold text-flare-400 hover:text-flare-300 sm:hidden"
+              >
+                {toonAlleOnderwerpen ? 'Toon minder' : 'Toon alle onderwerpen'}
+              </button>
+            )}
           </div>
         </div>
       </section>

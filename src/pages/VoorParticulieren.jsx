@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Car, ShieldCheck, BatteryCharging, Route, RefreshCcw, Luggage } from 'lucide-react'
 import PageMeta from '../components/PageMeta.jsx'
 import Hero from '../components/Hero.jsx'
@@ -5,6 +6,7 @@ import Button from '../components/Button.jsx'
 import SectionHeading from '../components/SectionHeading.jsx'
 import Reveal from '../components/Reveal.jsx'
 import TiltCard from '../components/TiltCard.jsx'
+import MobileCarousel from '../components/MobileCarousel.jsx'
 
 const categorieën = [
   {
@@ -60,6 +62,11 @@ const categorieën = [
 ]
 
 function VoorParticulieren() {
+  // Alleen voor de "filosofie"-vragen bij Veiligheid: die maken die ene kaart op mobiel veel
+  // hoger dan de andere vijf in de carrousel. Onder 640px staan ze daarom standaard
+  // ingeklapt (blijven wel gewoon in de HTML); vanaf 640px altijd volledig uitgeklapt.
+  const [toonFilosofie, setToonFilosofie] = useState(false)
+
   return (
     <>
       <PageMeta
@@ -93,35 +100,51 @@ function VoorParticulieren() {
             align="center"
             className="mx-auto"
           />
-          <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {categorieën.map((categorie, index) => (
-              <Reveal key={categorie.title} delay={index * 0.06} className="h-full">
-                <TiltCard className="h-full rounded-2xl border border-ink-100 bg-ink-50 p-7 shadow-base transition-shadow duration-300 ease-premium hover:shadow-raised">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-flare-50 text-flare-600">
-                    <categorie.icon className="h-5 w-5" strokeWidth={1.75} />
-                  </div>
-                  <h3 className="mt-5 font-heading text-lg font-semibold text-ink-950">{categorie.title}</h3>
-                  <ul className="mt-4 space-y-2">
-                    {categorie.items.map((item) => (
-                      <li key={item} className="text-sm leading-relaxed text-ink-600">
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-
-                  {categorie.filosofie && (
-                    <div className="mt-5 space-y-1.5 border-t border-ink-200 pt-4">
-                      {categorie.filosofie.map((vraag, i) => (
-                        <p key={vraag} className="text-sm font-medium text-ink-800">
-                          <span className="mr-2 text-flare-500">{i + 1}.</span>
-                          {vraag}
-                        </p>
-                      ))}
+          <div className="mt-14">
+            <MobileCarousel gridColsClassName="md:grid-cols-2 lg:grid-cols-3">
+              {categorieën.map((categorie, index) => (
+                <Reveal key={categorie.title} delay={index * 0.06} className="h-full">
+                  <TiltCard className="h-full rounded-2xl border border-ink-100 bg-ink-50 p-7 shadow-base transition-shadow duration-300 ease-premium hover:shadow-raised">
+                    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-flare-50 text-flare-600">
+                      <categorie.icon className="h-5 w-5" strokeWidth={1.75} />
                     </div>
-                  )}
-                </TiltCard>
-              </Reveal>
-            ))}
+                    <h3 className="mt-5 font-heading text-lg font-semibold text-ink-950">{categorie.title}</h3>
+                    <ul className="mt-4 space-y-2">
+                      {categorie.items.map((item) => (
+                        <li key={item} className="text-sm leading-relaxed text-ink-600">
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+
+                    {categorie.filosofie && (
+                      <div className="mt-5 border-t border-ink-200 pt-4">
+                        <div
+                          className={`space-y-1.5 ${toonFilosofie ? '' : 'hidden'} sm:!block`}
+                        >
+                          {categorie.filosofie.map((vraag, i) => (
+                            <p key={vraag} className="text-sm font-medium text-ink-800">
+                              <span className="mr-2 text-flare-500">{i + 1}.</span>
+                              {vraag}
+                            </p>
+                          ))}
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => setToonFilosofie((v) => !v)}
+                          aria-expanded={toonFilosofie}
+                          className={`text-sm font-semibold text-flare-600 hover:text-flare-700 sm:hidden ${
+                            toonFilosofie ? 'mt-1.5' : ''
+                          }`}
+                        >
+                          {toonFilosofie ? 'Toon minder' : 'Lees meer'}
+                        </button>
+                      </div>
+                    )}
+                  </TiltCard>
+                </Reveal>
+              ))}
+            </MobileCarousel>
           </div>
         </div>
       </section>

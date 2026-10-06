@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import PageMeta from '../components/PageMeta.jsx'
 import Hero from '../components/Hero.jsx'
@@ -23,6 +24,10 @@ const complexiteit = [
   'Connected services',
   'Verschillende rijmodi',
 ]
+
+// Op mobiel staan alleen de eerste zoveel onderwerpen meteen zichtbaar, de rest blijft in de
+// HTML staan maar is visueel verborgen tot "Toon alle onderwerpen". Vanaf sm: altijd alles.
+const ZICHTBARE_ONDERWERPEN_MOBIEL = 5
 
 const nietZelf = [
   'Trainers zoeken',
@@ -70,6 +75,7 @@ function VoorDealers() {
   const prefersReducedMotion = useReducedMotion()
   const isDesktop = useIsDesktop()
   const xScale = isDesktop ? DESKTOP_DRIFT_SCALE : 1
+  const [toonAlleOnderwerpen, setToonAlleOnderwerpen] = useState(false)
 
   return (
     <>
@@ -135,13 +141,32 @@ function VoorDealers() {
               </Reveal>
               <div className="flex flex-wrap content-start gap-3">
                 {complexiteit.map((item, index) => (
-                  <Reveal key={item} delay={index * 0.04} direction="right">
+                  <Reveal
+                    key={item}
+                    delay={index * 0.04}
+                    direction="right"
+                    className={
+                      !toonAlleOnderwerpen && index >= ZICHTBARE_ONDERWERPEN_MOBIEL
+                        ? 'hidden sm:!block'
+                        : undefined
+                    }
+                  >
                     <span className="inline-flex rounded-full border border-ink-200 bg-ink-50 px-4 py-2 text-sm font-medium text-ink-700">
                       {item}
                     </span>
                   </Reveal>
                 ))}
               </div>
+              {complexiteit.length > ZICHTBARE_ONDERWERPEN_MOBIEL && (
+                <button
+                  type="button"
+                  onClick={() => setToonAlleOnderwerpen((v) => !v)}
+                  aria-expanded={toonAlleOnderwerpen}
+                  className="text-left text-sm font-semibold text-flare-600 hover:text-flare-700 sm:hidden"
+                >
+                  {toonAlleOnderwerpen ? 'Toon minder' : 'Toon alle onderwerpen'}
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -157,7 +182,7 @@ function VoorDealers() {
           />
           <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {voordelen.map((voordeel, index) => (
-              <TextCard key={voordeel.title} {...voordeel} delay={index * 0.07} />
+              <TextCard key={voordeel.title} {...voordeel} delay={index * 0.07} compact />
             ))}
           </div>
         </div>
@@ -174,7 +199,7 @@ function VoorDealers() {
           />
           <div className="relative mx-auto mt-16 max-w-2xl">
             <div className="absolute bottom-2 left-4 top-2 w-px bg-ink-200" aria-hidden="true" />
-            <div className="space-y-10">
+            <div className="space-y-6 sm:space-y-10">
               {traject.map((stap, index) => (
                 <Reveal key={stap.number} delay={index * 0.08}>
                   <div className="relative flex gap-6">

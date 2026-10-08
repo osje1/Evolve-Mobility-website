@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { ChevronDown, Sparkles } from 'lucide-react'
 import { motion, useReducedMotion } from 'framer-motion'
 import PageMeta from '../components/PageMeta.jsx'
 import Hero from '../components/Hero.jsx'
@@ -92,6 +93,7 @@ function VoorDealers() {
         subtitle="Moderne elektrische auto's beschikken over tientallen veiligheids-, assistentie- en comfortsystemen. Dat roept bij veel klanten vragen op. Wij zorgen ervoor dat deze vragen beantwoord worden en klanten alle functies begrijpen en kunnen toepassen, zodat ze optimaal gebruik kunnen maken van hun nieuwe auto."
       >
         <div className="flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-5 py-3 text-sm font-medium text-white backdrop-blur-sm">
+          <Sparkles className="h-4 w-4 text-flare-400" strokeWidth={2} />
           Bijna elke klant leert iets nieuws tijdens de training
         </div>
         <Button to="/contact" variant="primary">
@@ -162,9 +164,15 @@ function VoorDealers() {
                   type="button"
                   onClick={() => setToonAlleOnderwerpen((v) => !v)}
                   aria-expanded={toonAlleOnderwerpen}
-                  className="text-left text-sm font-semibold text-flare-600 hover:text-flare-700 sm:hidden"
+                  aria-label={toonAlleOnderwerpen ? 'Toon minder onderwerpen' : 'Toon alle onderwerpen'}
+                  className="flex h-8 w-8 items-center justify-center text-flare-600 hover:text-flare-700 sm:hidden"
                 >
-                  {toonAlleOnderwerpen ? 'Toon minder' : 'Toon alle onderwerpen'}
+                  <ChevronDown
+                    className={`h-5 w-5 transition-transform duration-200 ease-premium ${
+                      toonAlleOnderwerpen ? 'rotate-180' : ''
+                    }`}
+                    strokeWidth={2.5}
+                  />
                 </button>
               )}
             </div>

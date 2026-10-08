@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Car, ShieldCheck, BatteryCharging, Route, RefreshCcw, Luggage } from 'lucide-react'
+import { Car, ShieldCheck, BatteryCharging, ChevronDown, Route, RefreshCcw, Luggage, Sparkles } from 'lucide-react'
 import PageMeta from '../components/PageMeta.jsx'
 import Hero from '../components/Hero.jsx'
 import Button from '../components/Button.jsx'
@@ -85,6 +85,7 @@ function VoorParticulieren() {
           Circa 75 minuten, persoonlijk en praktisch
         </div>
         <div className="flex items-center gap-2 rounded-full border border-ink-200 bg-white px-5 py-3 text-sm font-medium text-ink-700">
+          <Sparkles className="h-4 w-4 text-flare-600" strokeWidth={2} />
           Bijna iedereen leert iets nieuws tijdens de training
         </div>
         <Button to="/contact" variant="secondary">
@@ -133,11 +134,17 @@ function VoorParticulieren() {
                           type="button"
                           onClick={() => setToonFilosofie((v) => !v)}
                           aria-expanded={toonFilosofie}
-                          className={`text-sm font-semibold text-flare-600 hover:text-flare-700 sm:hidden ${
+                          aria-label={toonFilosofie ? 'Toon minder' : 'Lees meer'}
+                          className={`flex h-8 w-8 items-center justify-center text-flare-600 hover:text-flare-700 sm:hidden ${
                             toonFilosofie ? 'mt-1.5' : ''
                           }`}
                         >
-                          {toonFilosofie ? 'Toon minder' : 'Lees meer'}
+                          <ChevronDown
+                            className={`h-5 w-5 transition-transform duration-200 ease-premium ${
+                              toonFilosofie ? 'rotate-180' : ''
+                            }`}
+                            strokeWidth={2.5}
+                          />
                         </button>
                       </div>
                     )}

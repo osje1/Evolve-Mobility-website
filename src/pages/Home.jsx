@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { ChevronDown } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import PageMeta from '../components/PageMeta.jsx'
 import Hero from '../components/Hero.jsx'
@@ -122,9 +123,15 @@ function Home() {
                 type="button"
                 onClick={() => setToonAlleOnderwerpen((v) => !v)}
                 aria-expanded={toonAlleOnderwerpen}
-                className="text-left text-sm font-semibold text-flare-400 hover:text-flare-300 sm:hidden"
+                aria-label={toonAlleOnderwerpen ? 'Toon minder onderwerpen' : 'Toon alle onderwerpen'}
+                className="flex h-8 w-8 items-center justify-center text-flare-400 hover:text-flare-300 sm:hidden"
               >
-                {toonAlleOnderwerpen ? 'Toon minder' : 'Toon alle onderwerpen'}
+                <ChevronDown
+                  className={`h-5 w-5 transition-transform duration-200 ease-premium ${
+                    toonAlleOnderwerpen ? 'rotate-180' : ''
+                  }`}
+                  strokeWidth={2.5}
+                />
               </button>
             )}
           </div>

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { ChevronDown } from 'lucide-react'
 import PageMeta from '../components/PageMeta.jsx'
 import Hero from '../components/Hero.jsx'
 import SectionHeading from '../components/SectionHeading.jsx'
@@ -133,9 +134,15 @@ function WieZijnWij() {
               type="button"
               onClick={() => setToonAlleSpecialiteiten((v) => !v)}
               aria-expanded={toonAlleSpecialiteiten}
-              className="mx-auto mt-6 block text-sm font-semibold text-flare-600 hover:text-flare-700 sm:hidden"
+              aria-label={toonAlleSpecialiteiten ? 'Toon minder' : 'Toon meer'}
+              className="mx-auto mt-6 flex h-8 w-8 items-center justify-center text-flare-600 hover:text-flare-700 sm:hidden"
             >
-              {toonAlleSpecialiteiten ? 'Toon minder' : 'Toon meer'}
+              <ChevronDown
+                className={`h-5 w-5 transition-transform duration-200 ease-premium ${
+                  toonAlleSpecialiteiten ? 'rotate-180' : ''
+                }`}
+                strokeWidth={2.5}
+              />
             </button>
           )}
         </div>

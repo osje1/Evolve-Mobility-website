@@ -1,10 +1,12 @@
-import { Car, ShieldCheck, BatteryCharging, Route, RefreshCcw, Luggage, Clock, Sparkles } from 'lucide-react'
+import { useState } from 'react'
+import { Car, ShieldCheck, BatteryCharging, ChevronDown, Route, RefreshCcw, Luggage, Sparkles } from 'lucide-react'
 import PageMeta from '../components/PageMeta.jsx'
 import Hero from '../components/Hero.jsx'
 import Button from '../components/Button.jsx'
 import SectionHeading from '../components/SectionHeading.jsx'
 import Reveal from '../components/Reveal.jsx'
 import TiltCard from '../components/TiltCard.jsx'
+import MobileCarousel from '../components/MobileCarousel.jsx'
 
 const categorieën = [
   {
@@ -28,7 +30,14 @@ const categorieën = [
   {
     icon: BatteryCharging,
     title: 'Laden',
-    items: ['Thuisladen', 'AC-laden', 'DC-snelladen', 'Laadpassen', 'Laadapps', 'Laadplanning'],
+    items: [
+      'Laadplanning en laadlimiet instellen',
+      'Laadpassen en welke past bij jouw gebruik',
+      'Laadapps en navigatie naar laders',
+      'Laadsnelheid en laadcurve van jouw auto',
+      'Laadkabel en laadstand van de auto begrijpen',
+      'Laden onderweg gebruiken',
+    ],
   },
   {
     icon: Route,
@@ -53,6 +62,11 @@ const categorieën = [
 ]
 
 function VoorParticulieren() {
+  // Alleen voor de "filosofie"-vragen bij Veiligheid: die maken die ene kaart op mobiel veel
+  // hoger dan de andere vijf in de carrousel. Onder 640px staan ze daarom standaard
+  // ingeklapt (blijven wel gewoon in de HTML); vanaf 640px altijd volledig uitgeklapt.
+  const [toonFilosofie, setToonFilosofie] = useState(false)
+
   return (
     <>
       <PageMeta
@@ -68,7 +82,6 @@ function VoorParticulieren() {
         subtitle="Een elektrische auto werkt anders dan een traditionele auto. Tijdens een persoonlijke gebruikerstraining nemen we de tijd om uit te leggen wat jouw auto kan en hoe je deze optimaal gebruikt."
       >
         <div className="flex items-center gap-2 rounded-full border border-ink-200 bg-white px-5 py-3 text-sm font-medium text-ink-700">
-          <Clock className="h-4 w-4 text-flare-600" strokeWidth={2} />
           Circa 75 minuten, persoonlijk en praktisch
         </div>
         <div className="flex items-center gap-2 rounded-full border border-ink-200 bg-white px-5 py-3 text-sm font-medium text-ink-700">
@@ -88,35 +101,57 @@ function VoorParticulieren() {
             align="center"
             className="mx-auto"
           />
-          <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {categorieën.map((categorie, index) => (
-              <Reveal key={categorie.title} delay={index * 0.06} className="h-full">
-                <TiltCard className="h-full rounded-2xl border border-ink-100 bg-ink-50 p-7 shadow-base transition-shadow duration-300 ease-premium hover:shadow-raised">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-flare-50 text-flare-600">
-                    <categorie.icon className="h-5 w-5" strokeWidth={1.75} />
-                  </div>
-                  <h3 className="mt-5 font-heading text-lg font-semibold text-ink-950">{categorie.title}</h3>
-                  <ul className="mt-4 space-y-2">
-                    {categorie.items.map((item) => (
-                      <li key={item} className="text-sm leading-relaxed text-ink-600">
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-
-                  {categorie.filosofie && (
-                    <div className="mt-5 space-y-1.5 border-t border-ink-200 pt-4">
-                      {categorie.filosofie.map((vraag, i) => (
-                        <p key={vraag} className="text-sm font-medium text-ink-800">
-                          <span className="mr-2 text-flare-500">{i + 1}.</span>
-                          {vraag}
-                        </p>
-                      ))}
+          <div className="mt-14">
+            <MobileCarousel gridColsClassName="md:grid-cols-2 lg:grid-cols-3">
+              {categorieën.map((categorie, index) => (
+                <Reveal key={categorie.title} delay={index * 0.06} className="h-full">
+                  <TiltCard className="h-full rounded-2xl border border-ink-100 bg-ink-50 p-7 shadow-base transition-shadow duration-300 ease-premium hover:shadow-raised">
+                    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-flare-50 text-flare-600">
+                      <categorie.icon className="h-5 w-5" strokeWidth={1.75} />
                     </div>
-                  )}
-                </TiltCard>
-              </Reveal>
-            ))}
+                    <h3 className="mt-5 font-heading text-lg font-semibold text-ink-950">{categorie.title}</h3>
+                    <ul className="mt-4 space-y-2">
+                      {categorie.items.map((item) => (
+                        <li key={item} className="text-sm leading-relaxed text-ink-600">
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+
+                    {categorie.filosofie && (
+                      <div className="mt-5 border-t border-ink-200 pt-4">
+                        <div
+                          className={`space-y-1.5 ${toonFilosofie ? '' : 'hidden'} sm:!block`}
+                        >
+                          {categorie.filosofie.map((vraag, i) => (
+                            <p key={vraag} className="text-sm font-medium text-ink-800">
+                              <span className="mr-2 text-flare-500">{i + 1}.</span>
+                              {vraag}
+                            </p>
+                          ))}
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => setToonFilosofie((v) => !v)}
+                          aria-expanded={toonFilosofie}
+                          aria-label={toonFilosofie ? 'Toon minder' : 'Lees meer'}
+                          className={`flex h-8 w-8 items-center justify-center text-flare-600 hover:text-flare-700 sm:hidden ${
+                            toonFilosofie ? 'mt-1.5' : ''
+                          }`}
+                        >
+                          <ChevronDown
+                            className={`h-5 w-5 transition-transform duration-200 ease-premium ${
+                              toonFilosofie ? 'rotate-180' : ''
+                            }`}
+                            strokeWidth={2.5}
+                          />
+                        </button>
+                      </div>
+                    )}
+                  </TiltCard>
+                </Reveal>
+              ))}
+            </MobileCarousel>
           </div>
         </div>
       </section>

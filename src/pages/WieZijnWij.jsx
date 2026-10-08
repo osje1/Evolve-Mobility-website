@@ -1,16 +1,5 @@
-import {
-  GraduationCap,
-  Rocket,
-  Handshake,
-  CalendarRange,
-  BatteryCharging,
-  UserCheck,
-  Wrench,
-  BadgeCheck,
-  Compass,
-  MapPin,
-  Star,
-} from 'lucide-react'
+import { useState } from 'react'
+import { ChevronDown } from 'lucide-react'
 import PageMeta from '../components/PageMeta.jsx'
 import Hero from '../components/Hero.jsx'
 import SectionHeading from '../components/SectionHeading.jsx'
@@ -29,23 +18,29 @@ const expertises = [
 ]
 
 const specialiteiten = [
-  { icon: GraduationCap, title: 'EV-gebruikerstraining', description: 'Persoonlijke, praktische uitleg over wat een elektrische auto kan en hoe je hem optimaal gebruikt.' },
-  { icon: Rocket, title: 'Automotive productintroducties', description: 'Ondersteuning bij de demonstratie van nieuwe modellen en technologie naar klanten toe.' },
-  { icon: Handshake, title: 'Dealerondersteuning', description: 'Wij regelen de planning, uitvoering en kwaliteitsbewaking van klantgerichte trainingen. Dat versterkt ook de merkbeleving.' },
-  { icon: CalendarRange, title: 'Mobiliteitsevenementen', description: 'Trainers en begeleiders voor evenementen waar uitleg en demonstratie centraal staan.' },
-  { icon: BatteryCharging, title: 'EV- en laadtechnologie', description: 'Diepgaande kennis van laadtechniek, actieradius, energiemanagement en verschillende accutechnologieën.' },
+  { title: 'EV-gebruikerstraining', description: 'Persoonlijke, praktische uitleg over wat een elektrische auto kan en hoe je hem optimaal gebruikt.' },
+  { title: 'Automotive productintroducties', description: 'Ondersteuning bij de demonstratie van nieuwe modellen en technologie naar klanten toe.' },
+  { title: 'Dealerondersteuning', description: 'Wij regelen de planning, uitvoering en kwaliteitsbewaking van klantgerichte trainingen. Dat versterkt ook de merkbeleving.' },
+  { title: 'Mobiliteitsevenementen', description: 'Trainers en begeleiders voor evenementen waar uitleg en demonstratie centraal staan.' },
+  { title: 'EV- en laadtechnologie', description: 'Uitleg over laden, actieradius en energieverbruik van de auto.' },
 ]
 
+// Op mobiel staan alleen de eerste zoveel specialiteiten meteen zichtbaar, de rest blijft in
+// de HTML staan maar is visueel verborgen tot "Toon meer". Vanaf sm: altijd alles zichtbaar.
+const ZICHTBARE_SPECIALITEITEN_MOBIEL = 3
+
 const kernwaarden = [
-  { icon: UserCheck, label: 'Persoonlijk' },
-  { icon: Wrench, label: 'Praktisch' },
-  { icon: BadgeCheck, label: 'Professioneel' },
-  { icon: Compass, label: 'Onafhankelijk' },
-  { icon: MapPin, label: 'Landelijk inzetbaar' },
-  { icon: Star, label: 'Kwaliteit' },
+  { label: 'Persoonlijk' },
+  { label: 'Praktisch' },
+  { label: 'Professioneel' },
+  { label: 'Onafhankelijk' },
+  { label: 'Landelijk inzetbaar' },
+  { label: 'Kwaliteit' },
 ]
 
 function WieZijnWij() {
+  const [toonAlleSpecialiteiten, setToonAlleSpecialiteiten] = useState(false)
+
   return (
     <>
       <PageMeta
@@ -118,27 +113,47 @@ function WieZijnWij() {
           />
           <div className="mx-auto mt-14 max-w-2xl space-y-8">
             {specialiteiten.map((item, index) => (
-              <Reveal key={item.title} delay={index * 0.06}>
-                <div className="group border-l-2 border-ink-200 py-2 pl-6 transition-colors duration-300 ease-premium hover:border-flare-500">
-                  <div className="flex items-center gap-3">
-                    <item.icon
-                      className="h-5 w-5 flex-shrink-0 text-ink-400 transition-colors duration-300 ease-premium group-hover:text-flare-600"
-                      strokeWidth={1.75}
-                    />
-                    <h3 className="font-heading text-lg font-semibold text-ink-950">{item.title}</h3>
-                  </div>
-                  <p className="mt-2 pl-8 text-sm leading-relaxed text-ink-600">{item.description}</p>
+              <Reveal
+                key={item.title}
+                delay={index * 0.06}
+                className={
+                  !toonAlleSpecialiteiten && index >= ZICHTBARE_SPECIALITEITEN_MOBIEL
+                    ? 'hidden sm:!block'
+                    : undefined
+                }
+              >
+                <div className="border-l-2 border-ink-200 py-2 pl-6 transition-colors duration-300 ease-premium hover:border-flare-500">
+                  <h3 className="font-heading text-lg font-semibold text-ink-950">{item.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-ink-600">{item.description}</p>
                 </div>
               </Reveal>
             ))}
           </div>
+          {specialiteiten.length > ZICHTBARE_SPECIALITEITEN_MOBIEL && (
+            <button
+              type="button"
+              onClick={() => setToonAlleSpecialiteiten((v) => !v)}
+              aria-expanded={toonAlleSpecialiteiten}
+              aria-label={toonAlleSpecialiteiten ? 'Toon minder' : 'Toon meer'}
+              className="mx-auto mt-6 flex h-8 w-8 items-center justify-center text-flare-600 hover:text-flare-700 sm:hidden"
+            >
+              <ChevronDown
+                className={`h-5 w-5 transition-transform duration-200 ease-premium ${
+                  toonAlleSpecialiteiten ? 'rotate-180' : ''
+                }`}
+                strokeWidth={2.5}
+              />
+            </button>
+          )}
         </div>
       </section>
 
-      <NetworkCoverage
-        title="Eén organisatie, landelijk vertegenwoordigd"
-        description="Door heel Nederland werken wij samen met een geselecteerd netwerk van gespecialiseerde trainers. Een landelijk netwerk zodat er altijd iemand in de buurt is."
-      />
+      <div className="hidden sm:block">
+        <NetworkCoverage
+          title="Eén organisatie, landelijk vertegenwoordigd"
+          description="Door heel Nederland werken wij samen met een geselecteerd netwerk van gespecialiseerde trainers. Een landelijk netwerk zodat er altijd iemand in de buurt is."
+        />
+      </div>
 
       <section className="bg-white px-6 py-24 lg:px-10 lg:py-32">
         <div className="mx-auto max-w-7xl">
@@ -146,8 +161,7 @@ function WieZijnWij() {
           <div className="mt-14 flex flex-wrap items-stretch justify-center gap-4">
             {kernwaarden.map((waarde, index) => (
               <Reveal key={waarde.label} delay={index * 0.06}>
-                <div className="flex items-center gap-3 rounded-full border border-ink-200 bg-ink-50 px-6 py-4">
-                  <waarde.icon className="h-5 w-5 text-flare-600" strokeWidth={1.75} />
+                <div className="rounded-full border border-ink-200 bg-ink-50 px-6 py-4">
                   <span className="font-heading text-sm font-semibold text-ink-950">{waarde.label}</span>
                 </div>
               </Reveal>

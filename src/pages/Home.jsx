@@ -1,11 +1,12 @@
+import { useState } from 'react'
+import { ChevronDown } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { ShieldCheck, Gauge, BadgeCheck, GraduationCap, Handshake, CalendarRange, User } from 'lucide-react'
 import PageMeta from '../components/PageMeta.jsx'
 import Hero from '../components/Hero.jsx'
 import Button from '../components/Button.jsx'
 import SectionHeading from '../components/SectionHeading.jsx'
 import VideoBackground from '../components/VideoBackground.jsx'
-import IconCard from '../components/IconCard.jsx'
+import TextCard from '../components/TextCard.jsx'
 import NetworkCoverage from '../components/NetworkCoverage.jsx'
 import Reveal from '../components/Reveal.jsx'
 import TiltCard from '../components/TiltCard.jsx'
@@ -17,39 +18,43 @@ const technologieën = [
   'Aandachtsassistent',
   'Snelheidswaarschuwingen',
   'Regeneratief remmen',
-  'Laadtechnologie',
+  'Laden en laadplanning',
   'Actieradius',
   'Connected functies',
 ]
 
+// Op mobiel staan alleen de eerste zoveel onderwerpen meteen zichtbaar; de rest blijft in de
+// HTML staan (voor zoekmachines) maar is visueel verborgen tot de bezoeker op "Toon alle
+// onderwerpen" tikt. Vanaf sm: (640px) altijd alles zichtbaar, zoals nu.
+const ZICHTBARE_ONDERWERPEN_MOBIEL = 5
+
 const pijlers = [
   {
-    icon: ShieldCheck,
     title: 'Veiligheid',
     description:
       'De bestuurder begrijpt hoe actieve veiligheidssystemen werken en wanneer ze ingrijpen.',
   },
   {
-    icon: Gauge,
     title: 'Efficiëntie',
     description:
       'De bestuurder leert hoe hij slim omgaat met energie, laden, regeneratief remmen en actieradius.',
   },
   {
-    icon: BadgeCheck,
     title: 'Zekerheid',
     description: 'De bestuurder kan alle vragen stellen en leert alle ins en outs van de auto kennen.',
   },
 ]
 
 const diensten = [
-  { icon: GraduationCap, title: 'EV-gebruikerstrainingen', to: '/voor-particulieren#wat-leer-je-tijdens-de-training' },
-  { icon: Handshake, title: 'Dealerintroducties', to: '/voor-dealers#dealerintroducties' },
-  { icon: CalendarRange, title: 'Automotive- en mobiliteitsevenementen', to: '/voor-wie#automotive-mobiliteitsevenementen' },
-  { icon: User, title: 'Particuliere trainingen', to: '/voor-particulieren' },
+  { title: 'EV-gebruikerstrainingen', to: '/voor-particulieren#wat-leer-je-tijdens-de-training' },
+  { title: 'Dealerintroducties', to: '/voor-dealers#dealerintroducties' },
+  { title: 'Automotive- en mobiliteitsevenementen', to: '/voor-wie#automotive-mobiliteitsevenementen' },
+  { title: 'Particuliere trainingen', to: '/voor-particulieren' },
 ]
 
 function Home() {
+  const [toonAlleOnderwerpen, setToonAlleOnderwerpen] = useState(false)
+
   return (
     <>
       <PageMeta
@@ -97,13 +102,38 @@ function Home() {
             </Reveal>
             <div className="flex flex-wrap content-start gap-3">
               {technologieën.map((item, index) => (
-                <Reveal key={item} delay={index * 0.05} direction="right">
+                <Reveal
+                  key={item}
+                  delay={index * 0.05}
+                  direction="right"
+                  className={
+                    !toonAlleOnderwerpen && index >= ZICHTBARE_ONDERWERPEN_MOBIEL
+                      ? 'hidden sm:!block'
+                      : undefined
+                  }
+                >
                   <span className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-white backdrop-blur-sm">
                     {item}
                   </span>
                 </Reveal>
               ))}
             </div>
+            {technologieën.length > ZICHTBARE_ONDERWERPEN_MOBIEL && (
+              <button
+                type="button"
+                onClick={() => setToonAlleOnderwerpen((v) => !v)}
+                aria-expanded={toonAlleOnderwerpen}
+                aria-label={toonAlleOnderwerpen ? 'Toon minder onderwerpen' : 'Toon alle onderwerpen'}
+                className="flex h-8 w-8 items-center justify-center text-flare-400 hover:text-flare-300 sm:hidden"
+              >
+                <ChevronDown
+                  className={`h-5 w-5 transition-transform duration-200 ease-premium ${
+                    toonAlleOnderwerpen ? 'rotate-180' : ''
+                  }`}
+                  strokeWidth={2.5}
+                />
+              </button>
+            )}
           </div>
         </div>
       </section>
@@ -118,7 +148,7 @@ function Home() {
           />
           <div className="mt-14 grid gap-6 md:grid-cols-3">
             {pijlers.map((pijler, index) => (
-              <IconCard key={pijler.title} {...pijler} delay={index * 0.1} />
+              <TextCard key={pijler.title} {...pijler} delay={index * 0.1} />
             ))}
           </div>
         </div>
@@ -133,13 +163,9 @@ function Home() {
                 <TiltCard className="h-full">
                   <Link
                     to={dienst.to}
-                    className="group flex h-full flex-col justify-between rounded-2xl border border-ink-100 bg-ink-50 p-7 shadow-base transition-shadow duration-300 ease-premium hover:shadow-raised"
+                    className="flex h-full flex-col justify-between rounded-2xl border border-ink-100 bg-ink-50 p-7 shadow-base transition-shadow duration-300 ease-premium hover:shadow-raised"
                   >
-                    <dienst.icon
-                      className="h-7 w-7 text-flare-500 transition-transform duration-300 ease-premium group-hover:scale-110"
-                      strokeWidth={1.75}
-                    />
-                    <p className="mt-8 font-heading text-base font-semibold text-ink-950">{dienst.title}</p>
+                    <p className="font-heading text-base font-semibold text-ink-950">{dienst.title}</p>
                   </Link>
                 </TiltCard>
               </Reveal>

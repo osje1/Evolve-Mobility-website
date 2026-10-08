@@ -1,5 +1,4 @@
 import { useRef, useState } from 'react'
-import { Phone, Mail } from 'lucide-react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import PageMeta from '../components/PageMeta.jsx'
 import ProfilePhoto from '../components/ProfilePhoto.jsx'
@@ -127,14 +126,12 @@ function Contact() {
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-4 sm:justify-start">
               <div className="flex items-center gap-2 rounded-full border border-ink-200 bg-white px-5 py-3 text-sm font-medium text-ink-700">
-                <Phone className="h-4 w-4 text-flare-600" strokeWidth={2} />
                 [telefoonnummer]
               </div>
               <a
                 href="mailto:info@evolvemobility.nl"
                 className="flex items-center gap-2 rounded-full border border-ink-200 bg-white px-5 py-3 text-sm font-medium text-ink-700 transition-colors duration-200 ease-premium hover:border-flare-300 hover:text-flare-700"
               >
-                <Mail className="h-4 w-4 text-flare-600" strokeWidth={2} />
                 info@evolvemobility.nl
               </a>
             </div>
@@ -190,7 +187,7 @@ function Contact() {
                         type="text"
                         name="naam"
                         required
-                        className="rounded-lg border border-ink-200 bg-white px-4 py-2.5 text-ink-900 shadow-base transition-transform duration-200 ease-premium focus-visible:-translate-y-px"
+                        className="rounded-lg border border-ink-200 bg-white px-4 py-2.5 text-base text-ink-900 shadow-base transition-transform duration-200 ease-premium focus-visible:-translate-y-px sm:text-sm"
                       />
                     </label>
                     <label className="grid gap-1.5 text-sm font-medium text-ink-700">
@@ -198,7 +195,7 @@ function Contact() {
                       <input
                         type="text"
                         name="bedrijfsnaam"
-                        className="rounded-lg border border-ink-200 bg-white px-4 py-2.5 text-ink-900 shadow-base transition-transform duration-200 ease-premium focus-visible:-translate-y-px"
+                        className="rounded-lg border border-ink-200 bg-white px-4 py-2.5 text-base text-ink-900 shadow-base transition-transform duration-200 ease-premium focus-visible:-translate-y-px sm:text-sm"
                       />
                     </label>
                     <label className="grid gap-1.5 text-sm font-medium text-ink-700">
@@ -207,7 +204,7 @@ function Contact() {
                         type="email"
                         name="email"
                         required
-                        className="rounded-lg border border-ink-200 bg-white px-4 py-2.5 text-ink-900 shadow-base transition-transform duration-200 ease-premium focus-visible:-translate-y-px"
+                        className="rounded-lg border border-ink-200 bg-white px-4 py-2.5 text-base text-ink-900 shadow-base transition-transform duration-200 ease-premium focus-visible:-translate-y-px sm:text-sm"
                       />
                     </label>
                     <label className="grid gap-1.5 text-sm font-medium text-ink-700">
@@ -215,7 +212,7 @@ function Contact() {
                       <input
                         type="tel"
                         name="telefoonnummer"
-                        className="rounded-lg border border-ink-200 bg-white px-4 py-2.5 text-ink-900 shadow-base transition-transform duration-200 ease-premium focus-visible:-translate-y-px"
+                        className="rounded-lg border border-ink-200 bg-white px-4 py-2.5 text-base text-ink-900 shadow-base transition-transform duration-200 ease-premium focus-visible:-translate-y-px sm:text-sm"
                       />
                     </label>
                   </div>
@@ -226,7 +223,7 @@ function Contact() {
                       name="onderwerp"
                       required
                       defaultValue=""
-                      className="w-full min-w-0 rounded-lg border border-ink-200 bg-white px-4 py-2.5 text-ink-900 shadow-base transition-transform duration-200 ease-premium focus-visible:-translate-y-px"
+                      className="w-full min-w-0 rounded-lg border border-ink-200 bg-white px-4 py-2.5 text-base text-ink-900 shadow-base transition-transform duration-200 ease-premium focus-visible:-translate-y-px sm:text-sm"
                     >
                       <option value="" disabled>
                         Kies een onderwerp
@@ -245,7 +242,7 @@ function Contact() {
                       name="bericht"
                       rows={5}
                       required
-                      className="rounded-lg border border-ink-200 bg-white px-4 py-2.5 text-ink-900 shadow-base transition-transform duration-200 ease-premium focus-visible:-translate-y-px"
+                      className="rounded-lg border border-ink-200 bg-white px-4 py-2.5 text-base text-ink-900 shadow-base transition-transform duration-200 ease-premium focus-visible:-translate-y-px sm:text-sm"
                     />
                   </label>
 

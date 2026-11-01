@@ -25,9 +25,13 @@ const onderwerpen = [
   'Overig',
 ]
 
+const belmomenten = ["'s Ochtends (na 9:00)", "'s Middags", "'s Avonds (na 17:30)"]
+
 function Contact() {
   // 'idle' | 'submitting' | 'success' | 'error'
   const [status, setStatus] = useState('idle')
+  // 'ja' | 'nee' | '' (nothing chosen yet)
+  const [phonePreference, setPhonePreference] = useState('')
   const prefersReducedMotion = useReducedMotion()
   const isDesktop = useIsDesktop()
   const xScale = isDesktop ? DESKTOP_DRIFT_SCALE : 1
@@ -73,6 +77,7 @@ function Contact() {
 
       if (response.ok && result?.success) {
         form.reset()
+        setPhonePreference('')
         setStatus('success')
       } else {
         setStatus('error')
@@ -212,9 +217,65 @@ function Contact() {
                       <input
                         type="tel"
                         name="telefoonnummer"
+                        required={phonePreference === 'ja'}
                         className="rounded-lg border border-ink-200 bg-white px-4 py-2.5 text-base text-ink-900 shadow-base transition-transform duration-200 ease-premium focus-visible:-translate-y-px sm:text-sm"
                       />
                     </label>
+                  </div>
+
+                  <div className="grid gap-5 sm:grid-cols-2">
+                    <fieldset className="grid gap-1.5">
+                      <legend className="mb-1.5 text-sm font-medium text-ink-700">
+                        Heeft u voorkeur voor telefonisch contact?
+                      </legend>
+                      <div className="flex gap-3">
+                        {['ja', 'nee'].map((option) => (
+                          <label key={option} className="cursor-pointer">
+                            <input
+                              type="radio"
+                              name="telefonisch_contact"
+                              value={option === 'ja' ? 'Ja' : 'Nee'}
+                              checked={phonePreference === option}
+                              onChange={() => setPhonePreference(option)}
+                              className="peer sr-only"
+                            />
+                            <span className="block rounded-full border border-ink-200 bg-white px-6 py-2.5 text-sm font-medium text-ink-700 shadow-base transition-transform duration-200 ease-premium hover:-translate-y-px hover:border-flare-300 peer-checked:border-flare-500 peer-checked:bg-flare-50 peer-checked:text-flare-800 peer-focus-visible:ring-2 peer-focus-visible:ring-flare-500 peer-focus-visible:ring-offset-2">
+                              {option === 'ja' ? 'Ja' : 'Nee'}
+                            </span>
+                          </label>
+                        ))}
+                      </div>
+                    </fieldset>
+
+                    <AnimatePresence initial={false}>
+                      {phonePreference === 'ja' && (
+                        <motion.label
+                          key="belmoment"
+                          initial={{ opacity: 0, y: -8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -8 }}
+                          transition={{ duration: prefersReducedMotion ? 0 : 0.3, ease: [0.16, 1, 0.3, 1] }}
+                          className="grid gap-1.5 text-sm font-medium text-ink-700"
+                        >
+                          Wanneer kunnen we u het beste bereiken?
+                          <select
+                            name="belmoment"
+                            required
+                            defaultValue=""
+                            className="w-full min-w-0 rounded-lg border border-ink-200 bg-white px-4 py-2.5 text-base text-ink-900 shadow-base transition-transform duration-200 ease-premium focus-visible:-translate-y-px sm:text-sm"
+                          >
+                            <option value="" disabled>
+                              Kies een moment
+                            </option>
+                            {belmomenten.map((moment) => (
+                              <option key={moment} value={moment}>
+                                {moment}
+                              </option>
+                            ))}
+                          </select>
+                        </motion.label>
+                      )}
+                    </AnimatePresence>
                   </div>
 
                   <label className="grid gap-1.5 text-sm font-medium text-ink-700">
